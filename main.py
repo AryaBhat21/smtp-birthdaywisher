@@ -12,23 +12,29 @@
 #                         msg="Subject:Hello\n\nThis is a test email sent from Python."
 #                         )
 
+my_email = "mymail@gmail.com"
+password = "zcwvaxbxaupnqwak"
+
 import datetime as dt
-from random import random
+import random
+import smtplib
 
 now = dt.datetime.now()
-year = now.year
-month = now.month
 day_of_the_week = now.weekday()
-print(day_of_the_week)
-
-# date_of_birth = dt.datetime(year=2005, month=10, day=21, hour=4)
-# print(date_of_birth)
-
-#motivational quotes
-#open the file and read the contents choose random quote from list 
-
-with open("Birthday Wisher\quotes.txt") as file:
-    quotes = file.readlines()
-    random_quote = random.choice(quotes)
+if day_of_the_week == 6: #0 is Monday, 1 is Tuesday and so on
+    with open(r"Birthday Wisher\quotes.txt") as file:
+        quotes = file.readlines()
+        random_quote = random.choice(quotes)
+        
     print(random_quote)
+    with smtplib.SMTP("smtp.gmail.com") as connection:  #smtp server for gmail
+        connection.starttls()  #transport layer security - encrypts the connection
+        connection.login(user=my_email, password=password)
+        connection.sendmail(from_addr=my_email, 
+                            to_addrs="addresser@gmail.com",
+                            msg=f"Subject:Motivation\n\n{random_quote} "
+                            )
+
+
+
     
